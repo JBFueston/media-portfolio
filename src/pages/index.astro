@@ -1,17 +1,150 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import 'photoswipe/style.css';
+import '../styles/global.css';
 
+const galleryItems = await getCollection('gallery');
+galleryItems.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JB Fueston | Visual Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#0b0c0e] text-neutral-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen antialiased selection:bg-white selection:text-black">
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0b0c0e]/80 border-b border-white/5 px-6 py-5">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            JB Fueston
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          </h1>
+          <p class="text-xs text-neutral-400 mt-0.5">Media & Visual Projects</p>
+        </div>
+
+        <!-- Filter Navigation -->
+        <nav class="flex items-center gap-1.5 bg-neutral-900/90 p-1 rounded-xl border border-white/5 w-fit" id="filter-buttons">
+          <button data-filter="all" class="filter-btn active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-black transition-all shadow-sm">
+            All
+          </button>
+          <button data-filter="photo" class="filter-btn px-3.5 py-1.5 text-xs font-medium rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-all">
+            Photos
+          </button>
+          <button data-filter="video" class="filter-btn px-3.5 py-1.5 text-xs font-medium rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-all">
+            Videos
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      <div id="gallery" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {galleryItems.map((item) => (
+          <article 
+            class="gallery-item break-inside-avoid group relative rounded-2xl overflow-hidden bg-neutral-900 border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1" 
+            data-category={item.data.type}
+          >
+            {item.data.type === 'photo' ? (
+              <a
+                href={item.data.coverImage.src}
+                data-pswp-width={item.data.coverImage.width}
+                data-pswp-height={item.data.coverImage.height}
+                target="_blank"
+                class="block relative overflow-hidden bg-neutral-950 cursor-zoom-in"
+              >
+                <Image
+                  src={item.data.coverImage}
+                  alt={item.data.title}
+                  width={1200}
+                  quality="high"
+                  class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <!-- Subtle Dark Overlay on Hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
+                  <span class="text-xs font-medium text-white tracking-wide bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                    Expand Photo ↗
+                  </span>
+                </div>
+              </a>
+            ) : (
+              <div class="relative bg-black rounded-t-2xl overflow-hidden">
+                <video 
+                  controls 
+                  poster={item.data.coverImage.src} 
+                  class="w-full h-auto object-cover"
+                  preload="none"
+                >
+                  <source src={item.data.videoUrl} type="video/mp4" />
+                </video>
+              </div>
+            )}
+
+            <!-- Meta Bar -->
+            <div class="p-4 flex items-center justify-between bg-neutral-900/90 border-t border-white/5 backdrop-blur-sm">
+              <div>
+                <h2 class="text-sm font-semibold text-neutral-100 group-hover:text-white transition-colors">{item.data.title}</h2>
+                <p class="text-[11px] text-neutral-400 mt-0.5">
+                  {item.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </p>
+              </div>
+              <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-white/5 text-neutral-400 border border-white/5">
+                {item.data.type}
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-white/5 text-center text-xs text-neutral-400">
+      <p>© {new Date().getFullYear()} JB Fueston. Built with Astro & Vercel.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a[data-pswp-width]',
+        pswpModule: () => import('photoswipe')
+      });
+      lightbox.init();
+
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const galleryItems = document.querySelectorAll<HTMLElement>('.gallery-item');
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+
+          filterButtons.forEach((b) => {
+            b.classList.remove('bg-white', 'text-black', 'shadow-sm', 'font-semibold');
+            b.classList.add('text-neutral-400', 'font-medium');
+          });
+          
+          btn.classList.remove('text-neutral-400', 'font-medium');
+          btn.classList.add('bg-white', 'text-black', 'shadow-sm', 'font-semibold');
+
+          galleryItems.forEach((item) => {
+            if (filter === 'all' || item.dataset.category === filter) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

@@ -1,43 +1,46 @@
-# Astro Starter Kit: Minimal
+# Visual Media Portfolio
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A fast, responsive, and minimalist photo and video portfolio built with **Astro 5+**, **Tailwind CSS**, and **PhotoSwipe**. Hosted on **Vercel** with DNS managed through **Cloudflare**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+![Astro](https://img.shields.io/badge/Astro-FF5D01?style=for-the-badge&logo=astro&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## Features
+
+* **Content Layer Integration:** Uses Astro’s `glob` loader and Zod schema validation for type-safe media management.
+* **Automatic Image Optimization:** On-the-fly resizing, WebP conversion, and responsive srcset generation powered by `@astrojs/image` / Sharp.
+* **Responsive Masonry Layout:** Clean column flow supporting portrait, landscape, and square aspect ratios natively.
+* **Interactive Lightbox:** Full-resolution image modal powered by PhotoSwipe with touch support and smooth transition animations.
+* **Media Filtering:** Client-side category switching (Photos, Videos, All) with zero page reloads.
+* **Dark Mode Design:** Glassmorphic header and dark UI built with Tailwind CSS.
+
+---
+
+## Tech Stack
+
+* **Framework:** [Astro](https://astro.build)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com)
+* **Lightbox:** [PhotoSwipe](https://photoswipe.com)
+* **Hosting:** [Vercel](https://vercel.com)
+* **DNS & CDN:** [Cloudflare](https://cloudflare.com)
+
+---
+
+## Project Structure
 
 ```text
 /
-├── public/
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+│   ├── assets/              # Raw high-res photo assets (.jpg, .png, .webp)
+│   ├── content/
+│   │   └── gallery/         # Markdown content entries for photos & videos
+│   ├── pages/
+│   │   └── index.astro      # Main portfolio gallery & filtering UI
+│   ├── styles/
+│   │   └── global.css       # Tailwind CSS setup & global styles
+│   └── content.config.ts    # Content Collection schemas & glob loaders
+├── public/                  # Static assets (favicons, manifest)
+└── astro.config.mjs         # Astro configuration
