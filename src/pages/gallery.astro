@@ -1,0 +1,194 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import 'photoswipe/style.css';
+import '../styles/global.css';
+
+const galleryItems = await getCollection('gallery');
+galleryItems.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Master Gallery | JB Fueston</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#0b0c0e] text-neutral-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen antialiased">
+    
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0b0c0e]/80 border-b border-white/5 px-6 py-5">
+      <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-8">
+          <div>
+            <a href="/" class="group flex items-center gap-2 w-fit">
+              <h1 class="text-xl font-bold tracking-tight text-white group-hover:text-neutral-300 transition">
+                JB Fueston
+              </h1>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            </a>
+            <p class="text-xs text-neutral-400 mt-0.5">Master Media Gallery</p>
+          </div>
+
+          <nav class="flex items-center gap-4 border-l border-white/10 pl-6">
+            <a href="/" class="text-xs font-medium text-neutral-400 hover:text-white transition">Stories</a>
+            <a href="/gallery" class="text-xs font-semibold text-white border-b border-white pb-0.5">Master Gallery</a>
+          </nav>
+        </div>
+
+        <div class="flex items-center gap-4 flex-wrap">
+          <nav class="flex items-center gap-1.5 bg-neutral-900/90 p-1 rounded-xl border border-white/5 w-fit" id="filter-buttons">
+            <button data-filter="all" class="filter-btn active px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-black transition-all shadow-sm">
+              All
+            </button>
+            <button data-filter="photo" class="filter-btn px-3.5 py-1.5 text-xs font-medium rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-all">
+              Photos
+            </button>
+            <button data-filter="video" class="filter-btn px-3.5 py-1.5 text-xs font-medium rounded-lg text-neutral-400 hover:text-white hover:bg-white/5 transition-all">
+              Videos
+            </button>
+          </nav>
+
+          <div class="flex items-center gap-2 border-l border-white/10 pl-4">
+            <a href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </a>
+            <a href="https://youtube.com/@YOUR-CHANNEL" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <a href="https://instagram.com/YOUR-HANDLE" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      <div id="gallery" class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {galleryItems.map((item) => (
+          <article 
+            class="gallery-item break-inside-avoid group relative rounded-2xl overflow-hidden bg-neutral-900 border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1" 
+            data-category={item.data.type}
+          >
+            {item.data.type === 'photo' ? (
+              <a
+                href={item.data.coverImage.src}
+                data-pswp-width={item.data.coverImage.width}
+                data-pswp-height={item.data.coverImage.height}
+                target="_blank"
+                class="block relative overflow-hidden bg-neutral-950 cursor-zoom-in"
+              >
+                <Image
+                  src={item.data.coverImage}
+                  alt={item.data.title}
+                  width={1200}
+                  quality="high"
+                  class="w-full h-auto object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+                  {item.data.device ? (
+                    <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-black/60 text-neutral-200 border border-white/10 backdrop-blur-md">
+                      {item.data.device}
+                    </span>
+                  ) : <div />}
+                  <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-black/60 text-neutral-300 border border-white/10 backdrop-blur-md">
+                    {item.data.type}
+                  </span>
+                </div>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5 pointer-events-none">
+                  <span class="text-xs font-medium text-white tracking-wide bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+                    Expand Photo ↗
+                  </span>
+                </div>
+              </a>
+            ) : (
+              <div class="relative bg-black rounded-t-2xl overflow-hidden">
+                <div class="absolute top-3 right-3 z-10 pointer-events-none">
+                  <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-black/60 text-neutral-300 border border-white/10 backdrop-blur-md">
+                    video
+                  </span>
+                </div>
+                <video 
+                  controls 
+                  poster={item.data.coverImage.src} 
+                  class="w-full h-auto object-cover"
+                  preload="none"
+                >
+                  <source src={item.data.videoUrl} type="video/mp4" />
+                </video>
+              </div>
+            )}
+
+            <div class="p-4 bg-neutral-900/90 border-t border-white/5 backdrop-blur-sm">
+              <h2 class="text-sm font-semibold text-neutral-100 group-hover:text-white transition-colors truncate">
+                {item.data.title}
+              </h2>
+              <p class="text-[11px] text-neutral-400 mt-1 flex items-center gap-1.5 whitespace-nowrap overflow-hidden text-ellipsis">
+                <span>{item.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                {item.data.location && (
+                  <>
+                    <span class="text-neutral-600">•</span>
+                    <span class="text-neutral-300 truncate">{item.data.location}</span>
+                  </>
+                )}
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
+      <p>© {new Date().getFullYear()} JB Fueston. Built with Astro & Vercel.</p>
+      
+      <div class="flex items-center gap-4">
+        <a href="https://jbfueston.com" class="hover:text-white transition">Main Site ↗</a>
+        <a href="https://github.com/YOUR-GITHUB" class="hover:text-white transition">GitHub</a>
+        <a href="https://instagram.com/YOUR-HANDLE" class="hover:text-white transition">Instagram</a>
+      </div>
+    </footer>
+
+    <script>
+      import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a[data-pswp-width]',
+        pswpModule: () => import('photoswipe')
+      });
+      lightbox.init();
+
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const galleryItems = document.querySelectorAll<HTMLElement>('.gallery-item');
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+
+          filterButtons.forEach((b) => {
+            b.classList.remove('bg-white', 'text-black', 'shadow-sm', 'font-semibold');
+            b.classList.add('text-neutral-400', 'font-medium');
+          });
+          
+          btn.classList.remove('text-neutral-400', 'font-medium');
+          btn.classList.add('bg-white', 'text-black', 'shadow-sm', 'font-semibold');
+
+          galleryItems.forEach((item) => {
+            if (filter === 'all' || item.dataset.category === filter) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
