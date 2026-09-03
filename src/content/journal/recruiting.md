@@ -3,7 +3,7 @@ title: "Recruitment Video"
 date: 2026-09-02
 location: "Ormund Loop & Ponce Inlet FL"
 device: "DJI Mini 4K"
-summary: "Filming footage for sorority recruitment video"
+summary: "Aerial videography for sorority recruitment video"
 coverImage: "../../assets/recruitmentcover.png"
 tags:
   - drone
