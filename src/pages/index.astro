@@ -5,6 +5,17 @@ import '../styles/global.css';
 
 const posts = await getCollection('journal');
 posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const [featured, ...rest] = posts;
+const total = posts.length;
+
+const subjects = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const legendColors = ['bg-gold', 'bg-teal', 'bg-rose', 'bg-sage'];
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+const frame = (n: number) => String(n).padStart(3, '0');
 ---
 
 <html lang="en" class="dark">
@@ -12,39 +23,39 @@ posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>JB Fueston | Stories & Visuals</title>
+    <meta name="description" content="Photography, film, and field notes from JB Fueston." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#0b0c0e] text-neutral-100 font-['Plus_Jakarta_Sans',sans-serif] min-h-screen antialiased">
-    
-    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0b0c0e]/80 border-b border-white/5 px-6 py-5">
+  <body class="bg-ink text-paper font-body min-h-screen antialiased">
+
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-ink/85 border-b border-line px-6 py-5">
       <div class="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <a href="/" class="group flex items-center gap-2 w-fit">
-            <h1 class="text-xl font-bold tracking-tight text-white group-hover:text-neutral-300 transition">
+          <a href="/" class="w-fit block">
+            <h1 class="font-display text-2xl font-medium tracking-tight text-paper">
               JB Fueston
             </h1>
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           </a>
-          <p class="text-xs text-neutral-400 mt-0.5">Stories & Aerial Photography</p>
+          <p class="text-xs text-muted mt-0.5">Photography, film & field notes</p>
         </div>
 
-        <div class="flex items-center gap-4 flex-wrap">
-          <nav class="flex items-center gap-4">
-            <a href="/" class="text-xs font-semibold text-white border-b border-white pb-0.5">Stories</a>
-            <a href="/gallery" class="text-xs font-medium text-neutral-400 hover:text-white transition">Master Gallery ↗</a>
+        <div class="flex items-center gap-5 flex-wrap">
+          <nav class="flex items-center gap-5">
+            <a href="/" class="text-sm font-medium text-paper border-b-2 border-gold pb-0.5">Stories</a>
+            <a href="/gallery" class="text-sm font-medium text-muted hover:text-paper transition-colors">Gallery</a>
           </nav>
 
-          <div class="flex items-center gap-2 border-l border-white/10 pl-4">
-            <a href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+          <div class="flex items-center gap-1 border-l border-line pl-4">
+            <a href="https://github.com/YOUR-GITHUB" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="p-2 text-muted hover:text-gold transition-colors">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
             </a>
-            <a href="https://youtube.com/@YOUR-CHANNEL" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+            <a href="https://youtube.com/@YOUR-CHANNEL" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="p-2 text-muted hover:text-gold transition-colors">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
-            <a href="https://instagram.com/YOUR-HANDLE" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="p-2 text-neutral-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+            <a href="https://instagram.com/YOUR-HANDLE" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="p-2 text-muted hover:text-gold transition-colors">
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
             </a>
           </div>
@@ -52,61 +63,132 @@ posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
       </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-6 py-12">
-      <div class="space-y-8">
-        {posts.map((post) => (
-          <article class="group relative bg-neutral-900/40 border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition duration-300">
-            <a href={`/journal/${post.id}`} class="grid grid-cols-1 md:grid-cols-12 gap-6 p-6">
-              <div class="md:col-span-5 aspect-[4/3] rounded-xl overflow-hidden bg-neutral-950 relative">
-                <Image 
-                  src={post.data.coverImage} 
-                  alt={post.data.title} 
-                  width={800} 
-                  class="w-full h-full object-cover transition duration-500 group-hover:scale-105" 
-                />
-              </div>
-              <div class="md:col-span-7 flex flex-col justify-between">
-                <div>
-                  <div class="flex items-center gap-2 mb-2">
-                    {post.data.device && (
-                      <span class="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded-full bg-white/10 text-neutral-300 border border-white/10">
-                        {post.data.device}
-                      </span>
-                    )}
-                    {post.data.location && (
-                      <span class="text-xs text-neutral-400">• {post.data.location}</span>
-                    )}
-                  </div>
+    <main class="max-w-5xl mx-auto px-6">
 
-                  <h2 class="text-xl sm:text-2xl font-bold text-white group-hover:text-neutral-200 transition mb-2">
-                    {post.data.title}
-                  </h2>
-                  <p class="text-sm text-neutral-400 line-clamp-3 leading-relaxed">
-                    {post.data.summary}
-                  </p>
-                </div>
+      {featured && (
+        <a href={`/journal/${featured.id}`} class="group block mt-10 mb-14 rounded-sm overflow-hidden border border-line relative">
+          <div class="aspect-[16/9] sm:aspect-[21/9] overflow-hidden bg-surface">
+            <Image
+              src={featured.data.coverImage}
+              alt={featured.data.title}
+              width={1600}
+              quality="high"
+              class="w-full h-full object-cover scale-[1.03] transition-transform duration-700 ease-out group-hover:scale-100"
+            />
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent"></div>
 
-                <div class="mt-6 flex items-center justify-between text-xs text-neutral-400 pt-4 border-t border-white/5">
-                  <time>{post.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</time>
-                  <span class="font-medium text-neutral-300 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                    Read Story →
-                  </span>
-                </div>
+          <span class="absolute top-4 left-4 font-mono text-[11px] tracking-wide text-paper/70 bg-ink/50 px-2 py-1 rounded-[2px] backdrop-blur-sm">
+            FRAME {frame(total)}
+          </span>
+
+          <div class="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+            <h2 class="font-display text-3xl sm:text-5xl font-medium text-paper max-w-xl leading-[1.1]">
+              {featured.data.title}
+            </h2>
+            <p class="mt-3 text-sm text-paper/80 max-w-md hidden sm:block">
+              {featured.data.summary}
+            </p>
+            <div class="mt-4 flex items-center gap-3 text-xs">
+              <span class="text-paper/70 font-medium">{formatDate(featured.data.date)}</span>
+              {featured.data.location && (
+                <span class="text-muted border-l border-paper/20 pl-3">{featured.data.location}</span>
+              )}
+            </div>
+          </div>
+        </a>
+      )}
+
+      {subjects.length > 0 && (
+        <nav class="flex items-center gap-x-5 gap-y-2 flex-wrap mb-10 pb-4 border-b border-line" id="subject-filter" aria-label="Filter stories by subject">
+          <button data-subject="all" class="subject-btn active flex items-center gap-2 text-xs font-medium text-paper pb-1 border-b-2 border-gold transition-colors">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+            All subjects
+          </button>
+          {subjects.map((s, i) => (
+            <button data-subject={s} data-color={legendColors[i % legendColors.length]} class="subject-btn flex items-center gap-2 text-xs font-medium text-muted hover:text-paper pb-1 border-b-2 border-transparent transition-colors">
+              <span class={`w-1.5 h-1.5 rounded-full ${legendColors[i % legendColors.length]}`}></span>
+              {s}
+            </button>
+          ))}
+        </nav>
+      )}
+
+      <div class="divide-y divide-line" id="story-list">
+        {rest.map((post, i) => (
+          <a
+            href={`/journal/${post.id}`}
+            class="group grid grid-cols-[96px_1fr] sm:grid-cols-[180px_1fr] gap-5 sm:gap-8 py-6 story-row"
+            data-subjects={post.data.tags.join(' ')}
+          >
+            <div class="aspect-[4/3] rounded-sm overflow-hidden bg-surface relative">
+              <Image
+                src={post.data.coverImage}
+                alt={post.data.title}
+                width={400}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <span class="absolute bottom-1.5 left-1.5 font-mono text-[9px] text-paper/70 bg-ink/50 px-1.5 py-0.5 rounded-[2px]">
+                {frame(total - i - 1)}
+              </span>
+            </div>
+            <div class="flex flex-col justify-center min-w-0">
+              <h3 class="font-display text-lg sm:text-xl font-medium text-paper group-hover:text-gold transition-colors">
+                {post.data.title}
+              </h3>
+              <p class="text-sm text-muted mt-1.5 line-clamp-2 leading-relaxed hidden sm:block">
+                {post.data.summary}
+              </p>
+              <div class="mt-2.5 flex items-center gap-3 text-xs">
+                <span class="text-paper/70 font-medium">{formatDate(post.data.date)}</span>
+                {post.data.location && (
+                  <span class="text-muted border-l border-line pl-3">{post.data.location}</span>
+                )}
               </div>
-            </a>
-          </article>
+            </div>
+          </a>
         ))}
       </div>
+
+      {rest.length === 0 && (
+        <p class="text-sm text-muted py-10 border-t border-line">
+          More stories are on the way — check back soon, or browse the full gallery.
+        </p>
+      )}
+
     </main>
 
-    <footer class="max-w-5xl mx-auto px-6 py-12 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
+    <footer class="max-w-5xl mx-auto px-6 py-12 mt-8 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
       <p>© {new Date().getFullYear()} JB Fueston. Built with Astro & Vercel.</p>
-      
+
       <div class="flex items-center gap-4">
-        <a href="https://jbfueston.com" class="hover:text-white transition">Main Site ↗</a>
-        <a href="https://github.com/YOUR-GITHUB" class="hover:text-white transition">GitHub</a>
-        <a href="https://instagram.com/YOUR-HANDLE" class="hover:text-white transition">Instagram</a>
+        <a href="https://jbfueston.com" class="hover:text-gold transition-colors">Main site</a>
+        <a href="https://github.com/JBFueston" class="hover:text-gold transition-colors">GitHub</a>
+        <a href="https://instagram.com/jbfueston" class="hover:text-gold transition-colors">Instagram</a>
       </div>
     </footer>
+
+    <script>
+      const subjectButtons = document.querySelectorAll<HTMLElement>('.subject-btn');
+      const storyRows = document.querySelectorAll<HTMLElement>('.story-row');
+
+      subjectButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const subject = btn.getAttribute('data-subject');
+
+          subjectButtons.forEach((b) => {
+            b.classList.remove('text-paper', 'border-gold');
+            b.classList.add('text-muted', 'border-transparent');
+          });
+          btn.classList.remove('text-muted', 'border-transparent');
+          btn.classList.add('text-paper', 'border-gold');
+
+          storyRows.forEach((row) => {
+            const subjects = (row.dataset.subjects || '').split(' ');
+            row.style.display = subject === 'all' || subjects.includes(subject!) ? 'grid' : 'none';
+          });
+        });
+      });
+    </script>
   </body>
 </html>

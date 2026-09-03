@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@theme {
+  --color-ink: #12151b;
+  --color-surface: #1a1f28;
+  --color-surface-2: #212733;
+  --color-paper: #eef0ee;
+  --color-muted: #8b93a3;
+  --color-line: #2a303c;
+  --color-gold: #d7a24a;
+  --color-gold-dim: #a17a38;
+  --color-teal: #5c9c95;
+  --color-rose: #b8715f;
+  --color-sage: #7f9b74;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Georgia", serif;
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-feature-settings: "ss01" 1;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.prose :where(h2, h3) {
+  font-family: var(--font-display);
+  color: var(--color-paper);
+}
+
+.prose a {
+  color: var(--color-gold);
+  text-decoration-color: var(--color-gold-dim);
+}
+
+.prose strong {
+  color: var(--color-paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
