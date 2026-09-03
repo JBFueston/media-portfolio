@@ -6,10 +6,10 @@ device: "DJI Mini 4K"
 summary: "Midday flight over the lake"
 coverImage: "../../assets/camp.jpg"
 gallery:
-  - "../../assets/point.jpg"
-  - "../../assets/dropoff.jpg"
-  - "../../assets/sample.jpg"
-  - "../../assets/camp.jpg
+  - ../../assets/point.jpg
+  - ../../assets/dropoff.jpg
+  - ../../assets/sample.jpg
+  - ../../assets/camp.jpg
 tags:
   - drone
   - aerial
