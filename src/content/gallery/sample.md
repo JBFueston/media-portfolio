@@ -1,6 +1,6 @@
 ---
 title: "Lake Overlook"
-date: 2026-08-31
+date: 2026-07-31
 type: "photo"
 device: "DJI Mini 4K"
 location: "Skaneateles Lake, NY"

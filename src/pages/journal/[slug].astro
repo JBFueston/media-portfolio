@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
+import 'photoswipe/style.css';
 import '../../styles/global.css';
 
 // 1. Tell Astro which static pages to generate at build time
@@ -8,8 +9,8 @@ export async function getStaticPaths() {
   const posts = await getCollection('journal');
 
   return posts.map((post) => ({
-    params: { slug: post.id }, // Matches the [slug] parameter in the filename
-    props: { post },           // Passes the full post entry as a prop
+    params: { slug: post.id },
+    props: { post },
   }));
 }
 
@@ -73,6 +74,31 @@ const { Content } = await render(post);
         <Content />
       </article>
 
+      <!-- Mini Gallery Block -->
+      {post.data.gallery && post.data.gallery.length > 0 && (
+        <section class="mt-12 pt-8 border-t border-line" id="post-gallery">
+          <h2 class="font-display text-xl font-medium text-paper mb-6">Session Stills</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {post.data.gallery.map((img) => (
+              <a
+                href={img.src}
+                data-pswp-width={img.width}
+                data-pswp-height={img.height}
+                target="_blank"
+                class="block rounded-sm overflow-hidden border border-line bg-ink group cursor-zoom-in relative"
+              >
+                <Image
+                  src={img}
+                  alt="Session Still"
+                  width={800}
+                  class="w-full h-48 object-cover group-hover:scale-105 transition duration-500"
+                />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
       {post.data.tags.length > 0 && (
         <div class="flex items-center gap-x-5 gap-y-2 flex-wrap mt-10 pt-6 border-t border-line">
           {post.data.tags.map((tag, i) => (
@@ -88,5 +114,17 @@ const { Content } = await render(post);
     <footer class="max-w-3xl mx-auto px-6 py-12 border-t border-line text-center text-xs text-muted">
       <p>© {new Date().getFullYear()} JB Fueston</p>
     </footer>
+
+    <!-- PhotoSwipe Script -->
+    <script>
+      import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+      const lightbox = new PhotoSwipeLightbox({
+        gallery: '#post-gallery',
+        children: 'a',
+        pswpModule: () => import('photoswipe')
+      });
+      lightbox.init();
+    </script>
   </body>
 </html>
